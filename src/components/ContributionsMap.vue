@@ -1,15 +1,25 @@
 <template>
-	<section class="ContributionsMap">
-		{{ contributionMatrix }}
+	<section class="contributionsMapSection">
+		<!-- {{ contributionMatrix }} -->
+		<table class="contributions-grid">
+			<tr v-for="(week, weekIndex) of contributionMatrix" :key="weekIndex">
+				<td v-for="(day, dayIndex) in week" :key="dayIndex" :data-date="day.ISODate" class="day">
+					{{ day.contributions || 0 }}
+				</td>
+			</tr>
+		</table>
 	</section>
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 const { DateTime } = require('luxon');
 
 export default {
 	name: 'ContributionsMap',
+	mounted() {
+		this.fetchContributionItems();
+	},
 	data() {
 		return {
 			contributionsMap: {},
@@ -17,6 +27,18 @@ export default {
 		};
 	},
 	methods: {
+		async fetchContributionItems() {
+			axios
+				.get(`https://dpg.gg/test/calendar.json`)
+				.then((response) => {
+					this.contributionsMap = response.data;
+					this.contributionMatrix = this.generateContributionsMatrix();
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		},
+
 		generateContributionsMatrix() {
 			const matrix = [];
 			const daysOfWeek = [
@@ -40,14 +62,14 @@ export default {
 
 				for (let i = 0; i < 51; i++) {
 					// Собираем данные текущего дня
-					const curDayFormated = curDayObject.toISODate();
+					const curISODate = curDayObject.toISODate();
 					const curDayData = {
-						ISODate: curDayFormated
+						ISODate: curISODate
 					};
 
 					// Прверяем наличие контрибуций на текущую дату
-					if(this.contributionsMap && !isNaN(this.contributionsMap[curDayFormated]) ) {
-						curDayData["contributions"] = this.contributionsMap[curDayFormated];
+					if(this.contributionsMap && !isNaN(this.contributionsMap[curISODate]) ) {
+						curDayData["contributions"] = this.contributionsMap[curISODate];
 					}
 					weekRow.push(curDayData);
 
@@ -65,7 +87,7 @@ export default {
 </script>
 
 <style scoped>
-	.ContributionsMap {
+	.contributionsMapSection {
 
 	}
 </style>
