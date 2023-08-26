@@ -1,11 +1,20 @@
 <template>
-	<div class="contribution" :class="getClass(contributions)">
-
+	<div class="contribution"
+		@click="isSelected=true"
+		:class="[
+			getClass(contributions),
+			{'contribution-selected': isSelected}
+		]">
+		<ContributionTooltip v-if="isSelected" :count="contributions" :date="customizeDate(isoDate)"></ContributionTooltip>
 	</div>
 </template>
 
 <script>
+import { DateTime } from 'luxon';
+import ContributionTooltip from './ContributionTooltip.vue';
+
 export default {
+	components: { ContributionTooltip },
 	name: 'ContributionItem',
 	props: {
 		isoDate: {
@@ -17,6 +26,11 @@ export default {
 			required: false,
 			default: 0
 		}
+	},
+	data() {
+		return {
+			isSelected: false
+		};
 	},
 	methods: {
 		getClass(count) {
@@ -31,6 +45,12 @@ export default {
 			} else {
 				return "no-contributions";
 			}
+		},
+
+		customizeDate(ISODate) {
+			const date = DateTime.fromFormat(ISODate, 'yyyy-MM-dd');
+			const formattedDate = date.toFormat('cccc, LLLL d, yyyy');
+			return formattedDate;
 		}
 	}
 }
@@ -41,10 +61,15 @@ export default {
 		width: 15px;
 		height: 15px;
 		border: 1px solid #fff;
+		position: relative;
 
 		&:hover {
 			border: 1px solid rgba(0, 0, 0, 50%);
 		}
+	}
+
+	.contribution-selected {
+		border: 1px solid rgba(0, 0, 0);
 	}
 
 	.no-contributions {
