@@ -37,8 +37,11 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-		"indent": [4, "tab"]
-	}
+      "indent": [
+        1,
+        "tab"
+      ]
+    }
   },
   "browserslist": [
     "> 1%",
