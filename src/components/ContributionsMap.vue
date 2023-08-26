@@ -89,10 +89,29 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.contributionsMapSection {
-		.weekName {
-			color: #959494;
+		background: #fff;
+		display: inline-block;
+		padding: 3em 5em;
+
+		.contributionsTable {
+			border-collapse: collapse;
+
+			tr {
+
+				td {
+					// border:2px solid transparent;
+					padding: 0;
+					margin: 0;
+				}
+
+				.weekName {
+					font-size: 12px;
+					text-align: center;
+					color: #959494;
+				}
+			}
 		}
 	}
 </style>

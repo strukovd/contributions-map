@@ -40,6 +40,11 @@ export default {
 	.contribution {
 		width: 15px;
 		height: 15px;
+		border: 1px solid #fff;
+
+		&:hover {
+			border: 1px solid rgba(0, 0, 0, 50%);
+		}
 	}
 
 	.no-contributions {
