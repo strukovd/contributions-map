@@ -9,16 +9,18 @@
 				</td>
 			</tr>
 		</table>
+		<ContributionLegend/>
 	</section>
 </template>
 
 <script>
 import axios from 'axios';
 import ContributionItem from './ContributionItem.vue';
+import ContributionLegend from './ContributionLegend.vue';
 const { DateTime } = require('luxon');
 
 export default {
-	components: { ContributionItem },
+	components: { ContributionItem, ContributionLegend },
 	name: 'ContributionsMap',
 	mounted() {
 		this.contributionMatrix = this.generateContributionsMatrix();
