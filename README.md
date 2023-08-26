@@ -1,24 +1,17 @@
 # contributions-map
 
-## Project setup
+## Запуск
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Недоработано
+- Верхняя строка месяцев
+- Tooltip для легнды ![Пример изображения](./src/assets/legend_tooltip.png)
+- Баг при закрытии Tooltip таблицы
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+В остальном так:
+![Пример изображения](./src/assets/screen.png)
+
