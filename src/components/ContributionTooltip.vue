@@ -11,6 +11,11 @@ export default {
 	props: {
 		count: Number,
 		date: String
+	},
+	beforeMount() {
+		// TODO: use vuex
+		document.querySelectorAll(`.tooltip`).forEach(el => { el.remove(); });
+		document.querySelectorAll(`.contribution-selected`).forEach(el => { el.classList.remove(`contribution-selected`); });
 	}
 }
 </script>

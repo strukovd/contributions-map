@@ -1,6 +1,5 @@
 <template>
 	<section class="contributionsMapSection">
-		<!-- {{ contributionMatrix }} -->
 		<table class="contributionsTable">
 			<tr v-for="(week, weekIndex) of contributionMatrix" :key="weekIndex">
 				<td class="weekName">{{ daysOfWeek[weekIndex].shortName }}</td>
@@ -110,6 +109,7 @@ export default {
 
 				.weekName {
 					font-size: 12px;
+					padding:0 .3em 0 0;
 					text-align: center;
 					color: #959494;
 				}
