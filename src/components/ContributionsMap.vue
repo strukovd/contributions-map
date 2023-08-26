@@ -1,8 +1,9 @@
 <template>
 	<section class="contributionsMapSection">
 		<!-- {{ contributionMatrix }} -->
-		<table class="contributions-grid">
+		<table class="contributionsTable">
 			<tr v-for="(week, weekIndex) of contributionMatrix" :key="weekIndex">
+				<td class="weekName">{{ daysOfWeek[weekIndex].shortName }}</td>
 				<td v-for="(day, dayIndex) in week" :key="dayIndex" :data-date="day.ISODate" class="day">
 					{{ day.contributions || 0 }}
 				</td>
@@ -18,12 +19,23 @@ const { DateTime } = require('luxon');
 export default {
 	name: 'ContributionsMap',
 	mounted() {
+		this.contributionMatrix = this.generateContributionsMatrix();
 		this.fetchContributionItems();
 	},
 	data() {
 		return {
 			contributionsMap: {},
-			contributionMatrix: this.generateContributionsMatrix(),
+			contributionsLoaded: false,
+			daysOfWeek: [
+				{id: 1,	name: "Понедельник",	shortName: "Пн"},
+				{id: 2,	name: "Вторник",		shortName: ""},
+				{id: 3,	name: "Среда",			shortName: "Ср"},
+				{id: 4,	name: "Четверг",		shortName: ""},
+				{id: 5,	name: "Пятница",		shortName: "Пт"},
+				{id: 6,	name: "Суббота",		shortName: ""},
+				{id: 0,	name: "Воскресенье",	shortName: ""}
+			],
+			contributionMatrix: []
 		};
 	},
 	methods: {
@@ -33,6 +45,7 @@ export default {
 				.then((response) => {
 					this.contributionsMap = response.data;
 					this.contributionMatrix = this.generateContributionsMatrix();
+					// this.tasksLoaded = true;
 				})
 				.catch((error) => {
 					console.error(error);
@@ -41,24 +54,12 @@ export default {
 
 		generateContributionsMatrix() {
 			const matrix = [];
-			const daysOfWeek = [
-				{id: 1,	name: "Понедельник",	shortName: "Пн"},
-				{id: 2,	name: "Вторник",		shortName: "Вт"},
-				{id: 3,	name: "Среда",			shortName: "Ср"},
-				{id: 4,	name: "Четверг",		shortName: "Чт"},
-				{id: 5,	name: "Пятница",		shortName: "Пт"},
-				{id: 6,	name: "Суббота",		shortName: "Сб"},
-				{id: 0,	name: "Воскресенье",	shortName: "Вс"}
-			];
 			const currentDate = DateTime.now();
 			const firstWeek = currentDate.minus({ weeks: 50 });
 
-			for (const dayOfWeek of daysOfWeek) {
+			for (const dayOfWeek of this.daysOfWeek) {
 				let curDayObject = firstWeek.set({ weekday: dayOfWeek.id }); // Перещаемся на нужный день недели (напр.: пн)
-				const weekRow = [
-					{shortName: dayOfWeek.shortName}
-				];
-				// weekRow.push(dayOfWeek.shortName);
+				const weekRow = [];
 
 				for (let i = 0; i < 51; i++) {
 					// Собираем данные текущего дня
@@ -88,6 +89,8 @@ export default {
 
 <style scoped>
 	.contributionsMapSection {
-
+		.weekName {
+			color: #959494;
+		}
 	}
 </style>
