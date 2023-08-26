@@ -4,8 +4,8 @@
 		<table class="contributionsTable">
 			<tr v-for="(week, weekIndex) of contributionMatrix" :key="weekIndex">
 				<td class="weekName">{{ daysOfWeek[weekIndex].shortName }}</td>
-				<td v-for="(day, dayIndex) in week" :key="dayIndex" :data-date="day.ISODate" class="day">
-					{{ day.contributions || 0 }}
+				<td v-for="(day, dayIndex) in week" :key="dayIndex" class="ceilDay">
+					<ContributionItem :contributions="day.contributions" :isoDate="day.ISODate"/>
 				</td>
 			</tr>
 		</table>
@@ -14,9 +14,11 @@
 
 <script>
 import axios from 'axios';
+import ContributionItem from './ContributionItem.vue';
 const { DateTime } = require('luxon');
 
 export default {
+	components: { ContributionItem },
 	name: 'ContributionsMap',
 	mounted() {
 		this.contributionMatrix = this.generateContributionsMatrix();
